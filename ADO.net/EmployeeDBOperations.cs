@@ -143,7 +143,7 @@ namespace ADO.net
             string query = $"select * from Employees where Id = {id}";
             SqlCommand sqlCommand = new SqlCommand( query, sqlConnection);
             SqlDataReader reader = sqlCommand.ExecuteReader();
-            while (reader.HasRows)
+            while (reader.Read())
             {
                 Employee emp = new()
                 {
