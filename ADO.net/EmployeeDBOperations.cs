@@ -46,15 +46,16 @@ namespace ADO.net
             }
             return false;    
         }
-    
-    
+
+
         public void DeleteEmployee(int id)
         {
             sqlConnection.Open();
             string query = $"DELETE FROM Employees WHERE Id = {id}";
-            SqlCommand sqlCommand = new SqlCommand( query, sqlConnection);
-            int result = sqlCommand.ExecuteNonQuery(); 
-            if (result > 0) {
+            SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+            int result = sqlCommand.ExecuteNonQuery();
+            if (result > 0)
+            {
                 Console.WriteLine("Deleted Successfully ");
             }
             else

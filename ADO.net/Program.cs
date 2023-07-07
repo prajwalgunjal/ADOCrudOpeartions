@@ -15,8 +15,8 @@ namespace ADO.net
                 Email = "Sarika@gmail.com"
             };
 
-            employeeDBOperations.AddEmployee(employee);
-            /*employeeDBOperations.DeleteEmployee(3);*/
+            //employeeDBOperations.AddEmployee(employee);
+            employeeDBOperations.DeleteEmployee(3);
         }
     }
 }
