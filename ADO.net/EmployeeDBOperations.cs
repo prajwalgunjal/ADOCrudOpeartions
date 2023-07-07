@@ -134,6 +134,7 @@ namespace ADO.net
                 }
                 sqlConnection.Close();
                 return list; 
+
         }
 
 
@@ -155,8 +156,27 @@ namespace ADO.net
                 Console.WriteLine($"Id: {emp.Id}\t Name:- {emp.Name}\t Age:- {emp.Age}\t Email:- {emp.Email}");
                 return emp;
             }
+            sqlConnection.Close();  
             return null;
         }
     
     }
+    /*create database EmployeeDB;
+drop database EmployeeDB
+use EmployeeDB;
+
+create table Employees(
+Id int primary key identity(1,1),
+Name varchar(50) not null,
+Age int check(Age>18),
+Email varchar(150) not null unique)
+
+
+insert into Employees values('Vinay',53,'Vinay@email.com'),
+('Sham',26,'Sham@email.com'),
+('Mohan',33,'Mohan@email.com')
+
+select * from Employees
+
+select * from Employees where id =1 */
 }
