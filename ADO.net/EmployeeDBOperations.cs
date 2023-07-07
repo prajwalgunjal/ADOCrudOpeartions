@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -24,71 +25,137 @@ namespace ADO.net
 
                 string query = $"INSERT INTO Employees VALUES ('{newEmployee.Name}',{newEmployee.Age},'{newEmployee.Email}')";
                 SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
-
                 int result = sqlCommand.ExecuteNonQuery();     /// return int 0 means fail 1 means success 
-
                 if (result > 0)
                 {
                     Console.WriteLine($"{result} number of rows affected");
-                    sqlConnection.Close();
-                    return true;
+
                 }
                 else
                 {
                     Console.WriteLine("Something went wrong");
                     sqlConnection.Close();
                 }
+                return true;
+
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
                 return false;
             }
-            return false;    
+            finally
+            {
+                sqlConnection.Close();
+            }   
         }
 
 
-        public void DeleteEmployee(int id)
+        public bool DeleteEmployee(int id)
         {
-            sqlConnection.Open();
-            string query = $"DELETE FROM Employees WHERE Id = {id}";
-            SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
-            int result = sqlCommand.ExecuteNonQuery();
-            if (result > 0)
+            try
             {
-                Console.WriteLine("Deleted Successfully ");
+                sqlConnection.Open();
+                string query = $"DELETE FROM Employees WHERE Id = {id}";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                int result = sqlCommand.ExecuteNonQuery();
+                if (result > 0)
+                {
+                    Console.WriteLine("Deleted..");
+                    Console.WriteLine($"{result} number of rows affected");
+
+                }
+                return true;
+
             }
-            else
+            catch (Exception ex)
             {
-                Console.WriteLine("Not deleted");
+                Console.WriteLine(ex);
+                return false;
+            }
+            finally
+            {
+                sqlConnection.Close();
             }
         }
 
-        public void UpdateEmployee(int id,Employee employee)
+        public bool UpdateEmployee(int id,Employee employee)
+        {
+            try
+            {
+                sqlConnection.Open();
+                string query = $"UPDATE Employees SET Name = '{employee.Name}' WHERE Id={id}";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                int result = sqlCommand.ExecuteNonQuery();
+                if (result > 0)
+                {
+                    Console.WriteLine("Updated..");
+                    Console.WriteLine($"{result} number of rows affected");
+
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;   
+            }
+            finally
+            {
+                sqlConnection.Close();  
+            }
+        }
+
+        public List<Employee> GetAllEmployee()
+        {
+            List<Employee> list = new List<Employee>();
+            
+                sqlConnection.Open();
+                string query = $"SELECT * From Employees";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                while (reader.Read())
+                {
+                    Employee emp = new Employee()
+                    {
+                        Id = (int)reader["Id"],
+                        Name = (string)reader["Name"],
+                        Age = (int)reader["Age"],
+                        Email = (string)reader["Email"]
+                    };
+                    list.Add(emp);
+                }
+
+                // sir printed in main method
+                foreach (Employee emp in list)
+                {
+                    Console.WriteLine($"Id: {emp.Id}\t Name:- {emp.Name}\t Age:- {emp.Age}\t Email:- {emp.Email}");
+                }
+                sqlConnection.Close();
+                return list; 
+        }
+
+
+        public Employee GetEmployeeByID(int id)
         {
             sqlConnection.Open();
-            string query = $"UPDATE Employees SET Name = '{employee.Name}' WHERE Id={id}";
+            string query = $"select * from Employees where Id = {id}";
             SqlCommand sqlCommand = new SqlCommand( query, sqlConnection);
-            int result = sqlCommand.ExecuteNonQuery();
-            if (result > 0)
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+            while (reader.HasRows)
             {
-                Console.WriteLine("Updated Successfully ");
+                Employee emp = new()
+                {
+                    Id = (int)reader["Id"],
+                    Name = (string)reader["Name"],
+                    Age = (int)reader["Age"],
+                    Email = (string)reader["Email"]
+                };
+                Console.WriteLine($"Id: {emp.Id}\t Name:- {emp.Name}\t Age:- {emp.Age}\t Email:- {emp.Email}");
+                return emp;
             }
-            else
-            {
-                Console.WriteLine("Not Updated");
-            }
-        }
-
-       /* public List<Employee> GetAllEmployee()
-        {
-
-        }*/
-        
-
-        public void GetEmployeeByID(int id)
-        {
-
+            return null;
         }
     
     }

@@ -18,10 +18,16 @@ namespace ADO.net
             //employeeDBOperations.AddEmployee(employee);
             //employeeDBOperations.DeleteEmployee(3);
 
-            Employee updaatedEmployeee = new() { 
+            /*Employee updaatedEmployeee = new() { 
             Name= "Prajkta"
             };
             employeeDBOperations.UpdateEmployee(1,updaatedEmployeee);
+*/
+
+            //employeeDBOperations.GetAllEmployee();
+
+
+            employeeDBOperations.GetEmployeeByID(2);
         }
     }
 }
