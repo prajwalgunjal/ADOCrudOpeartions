@@ -64,10 +64,20 @@ namespace ADO.net
             }
         }
 
-
-        public void UpdateEmployee()
+        public void UpdateEmployee(int id,Employee employee)
         {
-
+            sqlConnection.Open();
+            string query = $"UPDATE Employees SET Name = '{employee.Name}' WHERE Id={id}";
+            SqlCommand sqlCommand = new SqlCommand( query, sqlConnection);
+            int result = sqlCommand.ExecuteNonQuery();
+            if (result > 0)
+            {
+                Console.WriteLine("Updated Successfully ");
+            }
+            else
+            {
+                Console.WriteLine("Not Updated");
+            }
         }
 
        /* public List<Employee> GetAllEmployee()

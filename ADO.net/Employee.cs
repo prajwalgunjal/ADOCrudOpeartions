@@ -19,7 +19,10 @@ namespace ADO.net
             Age = age;
             Email = email;
         }
-
+        public Employee(string name)
+        {
+            Name = name;    
+        }
         public Employee()
         {
         }
