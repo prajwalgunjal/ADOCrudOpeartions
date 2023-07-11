@@ -22,14 +22,12 @@ namespace ADO.net
             try
             {    
                 sqlConnection.Open();  
-
                 string query = $"INSERT INTO Employees VALUES ('{newEmployee.Name}',{newEmployee.Age},'{newEmployee.Email}')";
                 SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
                 int result = sqlCommand.ExecuteNonQuery();     /// return int 0 means fail 1 means success 
                 if (result > 0)
                 {
                     Console.WriteLine($"{result} number of rows affected");
-
                 }
                 else
                 {
@@ -37,7 +35,6 @@ namespace ADO.net
                     sqlConnection.Close();
                 }
                 return true;
-
             }
             catch (Exception ex)
             {
